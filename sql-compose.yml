@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+    enedis-mysql:
+        container_name: enedis-mysql
+        ports:
+            - '3307:3306'
+        volumes:
+            - '/container/enedis/sql-DB:/var/lib/mysql'
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=root4
+            - MYSQL_PASSWORD=root4
+            - MYSQL_DATABASE=db_enedis
+        image: mysql:latest
