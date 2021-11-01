@@ -20,7 +20,7 @@
   "panels": [
     {
       "aliasColors": {},
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "Enedis-mysql",
@@ -30,7 +30,7 @@
         },
         "overrides": []
       },
-      "fill": 1,
+      "fill": 5,
       "fillGradient": 0,
       "gridPos": {
         "h": 7,
@@ -50,8 +50,8 @@
         "total": false,
         "values": false
       },
-      "lines": false,
-      "linewidth": 1,
+      "lines": true,
+      "linewidth": 3,
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
@@ -143,7 +143,7 @@
       ],
       "timeFrom": "72h",
       "timeRegions": [],
-      "timeShift": "14h",
+      "timeShift": "12h",
       "title": "Valeurs pour les 3 derniers jours",
       "tooltip": {
         "shared": true,
@@ -160,6 +160,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:866",
           "format": "watt",
           "label": null,
           "logBase": 1,
@@ -168,6 +169,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:867",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -369,7 +371,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "consumption_curve"
+              "options": "conso_watt"
             },
             "properties": [
               {
@@ -381,7 +383,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Time"
+              "options": "time"
             },
             "properties": [
               {
@@ -393,7 +395,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "consumption_curve"
+              "options": "conso_watt"
             },
             "properties": [
               {
@@ -417,7 +419,7 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 13,
         "w": 11,
         "x": 13,
         "y": 7
@@ -431,11 +433,11 @@
       "pluginVersion": "7.5.7",
       "targets": [
         {
-          "format": "time_series",
+          "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  time AS \"time\",\n  metric AS metric,\n  conso_watt\n\nFROM enedis_metrics\nORDER BY time desc\n",
+          "rawSql": "SELECT\n  time,\n  conso_watt\n\nFROM enedis_metrics\nORDER BY time desc\n",
           "refId": "A",
           "select": [
             [
@@ -465,241 +467,6 @@
       "type": "table"
     },
     {
-      "datasource": "Enedis-mysql",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "watt"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 5,
-        "x": 0,
-        "y": 10
-      },
-      "id": 9,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Moyenne$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.7",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT week(time) as NUM_SEMAINE, avg(conso_watt)as Moyenne FROM enedis_metrics group by NUM_SEMAINE order by NUM_SEMAINE desc",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "data_id"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "enedis_metrics",
-          "timeColumn": "time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Conso moyenne (semaine)",
-      "type": "stat"
-    },
-    {
-      "datasource": "Enedis-mysql",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "watt"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 5,
-        "y": 10
-      },
-      "id": 10,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Maximum$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.7",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT week(time) as NUM_SEMAINE, max(conso_watt) as Maximum FROM enedis_metrics group by NUM_SEMAINE order by NUM_SEMAINE desc",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "data_id"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "enedis_metrics",
-          "timeColumn": "time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Conso Max (semaine)",
-      "type": "stat"
-    },
-    {
-      "datasource": "Enedis-mysql",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              }
-            ]
-          },
-          "unit": "watt"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 9,
-        "y": 10
-      },
-      "id": 11,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Minimum$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.7",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT week(time) as NUM_SEMAINE, min(conso_watt) as Minimum FROM enedis_metrics group by NUM_SEMAINE order by NUM_SEMAINE desc",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "data_id"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "enedis_metrics",
-          "timeColumn": "time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Conso Min (semaine)",
-      "type": "stat"
-    },
-    {
       "aliasColors": {},
       "bars": true,
       "dashLength": 10,
@@ -716,7 +483,7 @@
         "h": 5,
         "w": 13,
         "x": 0,
-        "y": 13
+        "y": 10
       },
       "hiddenSeries": false,
       "hideTimeOverride": true,
@@ -732,7 +499,7 @@
         "values": false
       },
       "lines": false,
-      "linewidth": 1,
+      "linewidth": 3,
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
@@ -752,7 +519,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  time AS \"time\",\n  metric AS metric,\n  conso_watt\n\nFROM enedis_metrics\nWHERE\n  $__timeFilter(time)\nORDER BY time\n",
+          "rawSql": "SELECT\n  time AS \"time\",\n  metric AS metric,\n  conso_watt\n\nFROM enedis_metrics\nWHERE\n  $__timeFilter(time)\nORDER BY time desc\n",
           "refId": "A",
           "select": [
             [
@@ -818,6 +585,177 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "datasource": "Enedis-mysql",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "NUM_SEMAINE"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "SEMAINE"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Maximum"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "MAX"
+              },
+              {
+                "id": "unit",
+                "value": "watt"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Minimum"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "MIN"
+              },
+              {
+                "id": "unit",
+                "value": "watt"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Moyenne"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "MOY"
+              },
+              {
+                "id": "unit",
+                "value": "watt"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 13,
+        "x": 0,
+        "y": 15
+      },
+      "id": 14,
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "7.5.7",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT week(time) as NUM_SEMAINE, avg(conso_watt)as Moyenne,min(conso_watt) as Minimum, max(conso_watt) as Maximum FROM enedis_metrics group by NUM_SEMAINE order by NUM_SEMAINE desc",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "*"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "bitcoin",
+          "timeColumn": "0",
+          "timeColumnType": "int",
+          "where": []
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Historique des stats par semaines",
+      "transformations": [],
+      "type": "table"
     }
   ],
   "refresh": "15m",
@@ -835,5 +773,5 @@
   "timezone": "",
   "title": "ENEDIS",
   "uid": "TrlvvVK7z",
-  "version": 40
+  "version": 53
 }
