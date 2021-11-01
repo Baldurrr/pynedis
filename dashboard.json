@@ -713,6 +713,29 @@
                 "value": "watt"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TOTAL"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "watt"
+              }
+            ]
           }
         ]
       },
@@ -733,7 +756,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT week(time) as NUM_SEMAINE, avg(conso_watt)as Moyenne,min(conso_watt) as Minimum, max(conso_watt) as Maximum FROM enedis_metrics group by NUM_SEMAINE order by NUM_SEMAINE desc",
+          "rawSql": "SELECT week(time) as NUM_SEMAINE, avg(conso_watt)as Moyenne,min(conso_watt) as Minimum, max(conso_watt) as Maximum, sum(conso_watt) as TOTAL FROM enedis_metrics group by NUM_SEMAINE order by NUM_SEMAINE desc",
           "refId": "A",
           "select": [
             [
@@ -773,5 +796,5 @@
   "timezone": "",
   "title": "ENEDIS",
   "uid": "TrlvvVK7z",
-  "version": 53
+  "version": 55
 }
